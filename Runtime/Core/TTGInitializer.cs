@@ -126,6 +126,7 @@ namespace TripleTapGames.Foundation
                 }
 
                 if (totalServices == 0) ReportProgress(1, 1, "Foundation", overall);
+                TTGAnalytics.RecordSessionRetention();
                 lastReport = new TTGInitializationReport(results, overall);
                 IsInitialized = overall != TTGInitializationStatus.Failure;
                 if (IsInitialized) OnInitialized?.Invoke();
@@ -163,6 +164,7 @@ namespace TripleTapGames.Foundation
                         "Deferred initialization threw an exception.", exception));
                 }
             }
+            TTGAnalytics.RecordSessionRetention();
             return initialized;
         }
 

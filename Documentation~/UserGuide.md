@@ -8,12 +8,12 @@ Open the Unity project's `Packages/manifest.json`. Add both entries inside `depe
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.2"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.3"
 ```
 
 Keep the comma before or after these entries valid JSON. Save the file and return to Unity. Wait until Package Manager finishes downloading packages and the Console has no compilation errors.
 
-Always use a release tag such as `v0.1.2`. Do not make a production game depend directly on `main` because it can change without warning.
+Always use a release tag such as `v0.1.3`. Do not make a production game depend directly on `main` because it can change without warning.
 
 If you cloned `TTG-Unity-Template`, these package entries are already present. Open the project and allow Unity to resolve them.
 
@@ -188,6 +188,10 @@ TTGAnalytics.LevelFailed("Level_12");
 
 GameAnalytics maps the three level methods to native Start, Complete, and Fail progression events. Firebase and other initialized analytics providers receive the TTG event representation. Successful TTG IAP purchases and AppLovin impressions are reported automatically by their adapters.
 
+Firebase, Facebook, GameAnalytics, and Singular receive normalized custom and level events when their adapters are installed, enabled, initialized, and allowed by consent. Singular translates AppLovin `ad_impression` data into its native `SingularAdData` revenue call instead of sending it as an ordinary custom event.
+
+TTG automatically sends `day_0_retention`, followed by `day_N_retention` once per UTC return day. The base game flow also sends one-time `level_5_completed`, `level_10_completed`, `level_15_completed`, and `level_20_completed` milestone events. These markers use local `PlayerPrefs`; clearing application data resets them.
+
 Do not call the same vendor event separately when TTG already sends it, or reporting will be duplicated.
 
 ## 8. Show ads
@@ -291,7 +295,7 @@ Foundation patches generated Android manifests without replacing custom manifest
 
 ## 12. Upgrade Foundation
 
-Change the tag in `Packages/manifest.json`, for example from `#v0.1.1` to `#v0.1.2`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests.
+Change the tag in `Packages/manifest.json`, for example from `#v0.1.2` to `#v0.1.3`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests.
 
 Do not edit files inside `Library/PackageCache`; Unity can replace them. Make package changes in the standalone `TTG-Unity-Foundation` repository and publish a new semantic-version tag.
 

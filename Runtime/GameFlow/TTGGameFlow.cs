@@ -81,7 +81,7 @@ namespace TripleTapGames.Foundation
         {
             if (State != TTGLevelState.Playing) return;
             State = TTGLevelState.Won;
-            TTGAnalytics.LevelCompleted(GetAnalyticsLevelId());
+            TTGAnalytics.LevelCompleted(GetAnalyticsLevelId(), CurrentLevelNumber);
             TTGAds.NotifyLevelCompleted(CurrentLevelNumber);
             SetOutcomePanels(true, false);
             onLevelWon?.Invoke();
