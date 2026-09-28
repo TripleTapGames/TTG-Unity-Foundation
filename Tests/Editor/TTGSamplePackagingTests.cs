@@ -27,6 +27,7 @@ namespace TripleTapGames.Foundation.Tests
         }
 
         [TestCase("GettingStarted.md")]
+        [TestCase("UserGuide.md")]
         [TestCase("FirebaseInstallation.md")]
         [TestCase("Troubleshooting.md")]
         [TestCase("Upgrading.md")]

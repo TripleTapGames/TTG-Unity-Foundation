@@ -61,7 +61,8 @@ namespace TripleTapGames.Foundation.Editor
                 AssetDatabase.SaveAssets();
                 Debug.Log("[TTG:Setup] Configuration and dependency defines applied for the active target.");
             }
-            if (GUILayout.Button("Open Documentation")) Application.OpenURL("https://github.com/TripleTapGames");
+            if (GUILayout.Button("Open Documentation"))
+                Application.OpenURL("https://github.com/TripleTapGames/TTG-Unity-Foundation/blob/main/Documentation~/UserGuide.md");
         }
 
         private static void DrawFirebase()

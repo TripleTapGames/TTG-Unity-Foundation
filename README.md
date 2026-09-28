@@ -8,7 +8,7 @@ Add both dependencies to the `dependencies` object in the consuming project's `P
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.0"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.1"
 ```
 
 Use an immutable release tag in production projects. UniTask is a required companion dependency; optional vendor SDKs are installed only when that integration is needed.
@@ -19,4 +19,4 @@ Firebase Analytics and Crashlytics 13.13.0 are imported separately using the off
 
 Populated configuration belongs to the consuming game, not this package. Runtime SDK keys are shipped in application binaries and must not be confused with server-side secrets. Never store privileged backend credentials in a Unity client.
 
-See [Getting Started](Documentation~/GettingStarted.md) and [Upgrading SDKs](Documentation~/Upgrading.md).
+Start with the [complete user guide](Documentation~/UserGuide.md). Shorter references are available in [Getting Started](Documentation~/GettingStarted.md), [Firebase Installation](Documentation~/FirebaseInstallation.md), and [Upgrading SDKs](Documentation~/Upgrading.md).
