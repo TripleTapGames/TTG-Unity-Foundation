@@ -1,0 +1,7 @@
+{
+  "name": "TTG.Foundation.Runtime",
+  "rootNamespace": "TripleTapGames.Foundation",
+  "references": ["UniTask", "UnityEngine.UI"],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

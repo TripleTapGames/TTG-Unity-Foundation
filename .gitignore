@@ -1,0 +1,23 @@
+.DS_Store
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.user
+*.tmp
+*.log
+
+# Never commit generated game configuration or vendor installers/binaries.
+Assets/TTGGenerated/
+Assets/google-services.json*
+Assets/GoogleService-Info.plist*
+Assets/Firebase/
+LocalSDKInstallers/
+*.unitypackage
+*.zip
+
+# Unity package conventions intentionally use directories ending in '~'.
+!Samples~/
+!Samples~/**
+!Documentation~/
+!Documentation~/**

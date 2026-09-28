@@ -1,0 +1,15 @@
+{
+  "name": "TTG.Foundation.UnityIAP",
+  "rootNamespace": "TripleTapGames.Foundation.Adapters.IAP",
+  "references": ["TTG.Foundation.Runtime", "UniTask", "UnityEngine.Purchasing", "UnityEngine.Purchasing.Stores", "Purchasing.Common"],
+  "defineConstraints": ["TTG_IAP"],
+  "versionDefines": [
+    {
+      "name": "com.unity.purchasing",
+      "expression": "[4.14.0,5.0.0)",
+      "define": "TTG_IAP"
+    }
+  ],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

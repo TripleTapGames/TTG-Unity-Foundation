@@ -1,0 +1,8 @@
+{
+  "name": "TTG.Foundation.GameAnalytics.Editor",
+  "references": ["TTG.Foundation.Runtime", "TTG.Foundation.Editor", "TTG.Foundation.GameAnalytics", "GameAnalyticsSDK"],
+  "includePlatforms": ["Editor"],
+  "defineConstraints": ["TTG_GAMEANALYTICS_UPM"],
+  "versionDefines": [{ "name": "com.gameanalytics.sdk", "expression": "[8.2.0,9.0.0)", "define": "TTG_GAMEANALYTICS_UPM" }],
+  "autoReferenced": true
+}

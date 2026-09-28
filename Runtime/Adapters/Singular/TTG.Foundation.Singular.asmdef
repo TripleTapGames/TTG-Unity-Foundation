@@ -1,0 +1,9 @@
+{
+  "name": "TTG.Foundation.Singular",
+  "rootNamespace": "TripleTapGames.Foundation.Adapters.Singular",
+  "references": ["TTG.Foundation.Runtime", "UniTask", "SingularSDK"],
+  "defineConstraints": ["TTG_SINGULAR_UPM"],
+  "versionDefines": [{ "name": "singular-unity-package", "expression": "[5.10.1,6.0.0)", "define": "TTG_SINGULAR_UPM" }],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

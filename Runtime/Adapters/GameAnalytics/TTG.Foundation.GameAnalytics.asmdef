@@ -1,0 +1,9 @@
+{
+  "name": "TTG.Foundation.GameAnalytics",
+  "rootNamespace": "TripleTapGames.Foundation.Adapters.GameAnalytics",
+  "references": ["TTG.Foundation.Runtime", "UniTask", "GameAnalyticsSDK"],
+  "defineConstraints": ["TTG_GAMEANALYTICS_UPM"],
+  "versionDefines": [{ "name": "com.gameanalytics.sdk", "expression": "[8.2.0,9.0.0)", "define": "TTG_GAMEANALYTICS_UPM" }],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

@@ -1,0 +1,15 @@
+{
+  "name": "TTG.Foundation.AppLovin",
+  "rootNamespace": "TripleTapGames.Foundation.Adapters.AppLovin",
+  "references": ["TTG.Foundation.Runtime", "UniTask", "MaxSdk.Scripts"],
+  "defineConstraints": ["TTG_APPLOVIN"],
+  "versionDefines": [
+    {
+      "name": "com.applovin.mediation.ads",
+      "expression": "8.6.6",
+      "define": "TTG_APPLOVIN"
+    }
+  ],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

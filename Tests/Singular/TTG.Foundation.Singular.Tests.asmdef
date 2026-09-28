@@ -1,0 +1,9 @@
+{
+  "name": "TTG.Foundation.Singular.Tests",
+  "references": ["TTG.Foundation.Runtime", "TTG.Foundation.Singular", "TTG.Foundation.Singular.Editor", "SingularSDK"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "includePlatforms": ["Editor"],
+  "defineConstraints": ["TTG_SINGULAR_UPM"],
+  "versionDefines": [{ "name": "singular-unity-package", "expression": "[5.10.1,6.0.0)", "define": "TTG_SINGULAR_UPM" }],
+  "autoReferenced": false
+}

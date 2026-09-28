@@ -1,0 +1,9 @@
+{
+  "name": "TTG.Foundation.Tests.Editor",
+  "rootNamespace": "TripleTapGames.Foundation.Tests",
+  "references": ["TTG.Foundation.Runtime", "TTG.Foundation.Editor", "UniTask"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": false,
+  "noEngineReferences": false
+}

@@ -1,0 +1,8 @@
+{
+  "name": "TTG.Foundation.Singular.Editor",
+  "references": ["TTG.Foundation.Runtime", "TTG.Foundation.Editor", "TTG.Foundation.Singular", "SingularSDK"],
+  "includePlatforms": ["Editor"],
+  "defineConstraints": ["TTG_SINGULAR_UPM"],
+  "versionDefines": [{ "name": "singular-unity-package", "expression": "[5.10.1,6.0.0)", "define": "TTG_SINGULAR_UPM" }],
+  "autoReferenced": true
+}

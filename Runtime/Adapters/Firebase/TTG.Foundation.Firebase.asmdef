@@ -1,0 +1,8 @@
+{
+  "name": "TTG.Foundation.Firebase",
+  "rootNamespace": "TripleTapGames.Foundation.Adapters.Firebase",
+  "references": ["TTG.Foundation.Runtime", "UniTask"],
+  "defineConstraints": ["TTG_FIREBASE"],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

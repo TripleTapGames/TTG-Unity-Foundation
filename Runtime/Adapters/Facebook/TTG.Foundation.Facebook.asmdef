@@ -1,0 +1,8 @@
+{
+  "name": "TTG.Foundation.Facebook",
+  "rootNamespace": "TripleTapGames.Foundation.Adapters.Facebook",
+  "references": ["TTG.Foundation.Runtime", "UniTask"],
+  "defineConstraints": ["TTG_FACEBOOK"],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

@@ -1,0 +1,25 @@
+{
+  "name": "com.tripletapgames.foundation",
+  "version": "0.1.0",
+  "displayName": "TTG Foundation",
+  "description": "Shared initialization, analytics, ads, attribution, privacy, purchasing, validation, and build infrastructure for Triple Tap Games.",
+  "license": "MIT",
+  "unity": "2022.3",
+  "author": { "name": "Triple Tap Games" },
+  "dependencies": {
+    "com.unity.ugui": "1.0.0"
+  },
+  "keywords": ["ttg", "analytics", "ads", "iap"],
+  "samples": [
+    {
+      "displayName": "Bootstrap Example",
+      "description": "Minimal asynchronous TTG initialization example.",
+      "path": "Samples~/BootstrapExample"
+    },
+    {
+      "displayName": "Legacy Migration",
+      "description": "Opt-in bridge guidance for projects migrating from TripleTapSDK.",
+      "path": "Samples~/LegacyMigration"
+    }
+  ]
+}
