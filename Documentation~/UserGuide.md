@@ -8,12 +8,12 @@ Open the Unity project's `Packages/manifest.json`. Add both entries inside `depe
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.1"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.2"
 ```
 
 Keep the comma before or after these entries valid JSON. Save the file and return to Unity. Wait until Package Manager finishes downloading packages and the Console has no compilation errors.
 
-Always use a release tag such as `v0.1.1`. Do not make a production game depend directly on `main` because it can change without warning.
+Always use a release tag such as `v0.1.2`. Do not make a production game depend directly on `main` because it can change without warning.
 
 If you cloned `TTG-Unity-Template`, these package entries are already present. Open the project and allow Unity to resolve them.
 
@@ -45,10 +45,10 @@ The core package requires only UniTask. Vendor adapters compile only when their 
 | Singular | Official Git package 5.10.1 |
 | Unity IAP | Unity package 4.14.0 |
 | Firebase | Analytics and Crashlytics 13.13.0 imported manually |
-| Facebook | Guided local Facebook SDK import; existing 17.x API supported |
+| Facebook | Guided local Facebook SDK 17.0.0 import |
 | DOTween | Optional guided import; Foundation runtime does not depend on it |
 
-Do not install a GameAnalytics UPM package while an old `Assets/GameAnalytics` copy remains. Do not mix Firebase asset imports and Firebase UPM packages.
+Do not install a GameAnalytics UPM package while an old `Assets/GameAnalytics` copy remains. Do not mix Firebase asset imports and Firebase UPM packages. For Facebook, download the official `sdk-version-17.0.0` Unity package and do not substitute an 18.x release.
 
 ### Firebase
 
@@ -291,7 +291,7 @@ Foundation patches generated Android manifests without replacing custom manifest
 
 ## 12. Upgrade Foundation
 
-Change the tag in `Packages/manifest.json`, for example from `#v0.1.0` to `#v0.1.1`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests.
+Change the tag in `Packages/manifest.json`, for example from `#v0.1.1` to `#v0.1.2`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests.
 
 Do not edit files inside `Library/PackageCache`; Unity can replace them. Make package changes in the standalone `TTG-Unity-Foundation` repository and publish a new semantic-version tag.
 

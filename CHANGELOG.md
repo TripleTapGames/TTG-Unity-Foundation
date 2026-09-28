@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Changed the guided Facebook SDK pin to version 17.0.0.
+
 ## 0.1.1
 
 - Added a complete package installation and usage guide.
