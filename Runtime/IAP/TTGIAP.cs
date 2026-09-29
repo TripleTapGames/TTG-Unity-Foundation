@@ -55,12 +55,7 @@ namespace TripleTapGames.Foundation
                 return;
             }
 
-            var once = new TTGAds.Once<TTGPurchaseResult>(result =>
-            {
-                if (result.Status == TTGPurchaseStatus.Succeeded)
-                    TTGAnalytics.Purchase(result.ProductId, result.LocalizedPrice, result.Currency, result.TransactionId);
-                callback?.Invoke(result);
-            });
+            var once = new TTGAds.Once<TTGPurchaseResult>(result => callback?.Invoke(result));
             provider.Purchase(productId, once.Invoke);
         }
 

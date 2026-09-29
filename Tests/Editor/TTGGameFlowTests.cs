@@ -46,34 +46,28 @@ namespace TripleTapGames.Foundation.Tests
         }
 
         [Test]
-        public void WinAdvancesSequenceAndEmitsProgressionOnce()
+        public void WinAdvancesSequenceWithoutSendingAnalytics()
         {
             flow.LoadLevel(0);
             flow.WinLevel();
             flow.WinLevel();
             flow.NextLevel();
 
-            Assert.That(analytics.Events, Is.EqualTo(new[]
-            {
-                TTGEventNames.LevelStart, TTGEventNames.LevelComplete, TTGEventNames.LevelStart
-            }));
+            Assert.That(analytics.Events, Is.Empty);
             Assert.That(flow.CurrentLevelIndex, Is.EqualTo(1));
             Assert.That(flow.CurrentLevel.LevelId, Is.EqualTo("Level_B"));
             Assert.That(PlayerPrefs.GetInt("TTG.Tests.GameFlow"), Is.EqualTo(1));
         }
 
         [Test]
-        public void LoseAndRetryEmitFailThenAnotherStart()
+        public void LoseAndRetryDoNotSendAnalytics()
         {
             flow.LoadLevel(0);
             flow.LoseLevel();
             flow.LoseLevel();
             flow.RetryLevel();
 
-            Assert.That(analytics.Events, Is.EqualTo(new[]
-            {
-                TTGEventNames.LevelStart, TTGEventNames.LevelFail, TTGEventNames.LevelStart
-            }));
+            Assert.That(analytics.Events, Is.Empty);
             Assert.That(flow.State, Is.EqualTo(TTGLevelState.Playing));
         }
 

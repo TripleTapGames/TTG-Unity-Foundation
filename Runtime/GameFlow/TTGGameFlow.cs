@@ -73,7 +73,6 @@ namespace TripleTapGames.Foundation
             SetOutcomePanels(false, false);
             State = TTGLevelState.Playing;
             if (levelLabel != null) levelLabel.text = "Level " + CurrentLevelNumber;
-            TTGAnalytics.LevelStarted(GetAnalyticsLevelId());
             onLevelStarted?.Invoke();
         }
 
@@ -81,7 +80,6 @@ namespace TripleTapGames.Foundation
         {
             if (State != TTGLevelState.Playing) return;
             State = TTGLevelState.Won;
-            TTGAnalytics.LevelCompleted(GetAnalyticsLevelId(), CurrentLevelNumber);
             TTGAds.NotifyLevelCompleted(CurrentLevelNumber);
             SetOutcomePanels(true, false);
             onLevelWon?.Invoke();
@@ -91,7 +89,6 @@ namespace TripleTapGames.Foundation
         {
             if (State != TTGLevelState.Playing) return;
             State = TTGLevelState.Lost;
-            TTGAnalytics.LevelFailed(GetAnalyticsLevelId());
             SetOutcomePanels(false, true);
             onLevelLost?.Invoke();
         }
@@ -122,13 +119,6 @@ namespace TripleTapGames.Foundation
 
         [ContextMenu("Debug/Lose Current Level")]
         private void DebugLose() => LoseLevel();
-
-        private string GetAnalyticsLevelId()
-        {
-            return string.IsNullOrWhiteSpace(CurrentLevel?.LevelId)
-                ? "Level_" + CurrentLevelNumber
-                : CurrentLevel.LevelId.Trim();
-        }
 
         private void SetOutcomePanels(bool showWin, bool showLose)
         {

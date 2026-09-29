@@ -111,13 +111,11 @@ namespace TripleTapGames.Foundation.Adapters.AppLovin
             MaxSdkCallbacks.Interstitial.OnAdLoadFailedEvent += OnInterstitialLoadFailed;
             MaxSdkCallbacks.Interstitial.OnAdHiddenEvent += OnInterstitialHidden;
             MaxSdkCallbacks.Interstitial.OnAdDisplayFailedEvent += OnInterstitialDisplayFailed;
-            MaxSdkCallbacks.Interstitial.OnAdRevenuePaidEvent += OnRevenuePaid;
             MaxSdkCallbacks.Rewarded.OnAdLoadedEvent += OnRewardedLoaded;
             MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent += OnRewardedLoadFailed;
             MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardReceived;
             MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedHidden;
             MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedDisplayFailed;
-            MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRevenuePaid;
         }
 
         private void Unsubscribe()
@@ -127,13 +125,11 @@ namespace TripleTapGames.Foundation.Adapters.AppLovin
             MaxSdkCallbacks.Interstitial.OnAdLoadFailedEvent -= OnInterstitialLoadFailed;
             MaxSdkCallbacks.Interstitial.OnAdHiddenEvent -= OnInterstitialHidden;
             MaxSdkCallbacks.Interstitial.OnAdDisplayFailedEvent -= OnInterstitialDisplayFailed;
-            MaxSdkCallbacks.Interstitial.OnAdRevenuePaidEvent -= OnRevenuePaid;
             MaxSdkCallbacks.Rewarded.OnAdLoadedEvent -= OnRewardedLoaded;
             MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent -= OnRewardedLoadFailed;
             MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent -= OnRewardReceived;
             MaxSdkCallbacks.Rewarded.OnAdHiddenEvent -= OnRewardedHidden;
             MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent -= OnRewardedDisplayFailed;
-            MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent -= OnRevenuePaid;
         }
 
         private void LoadInterstitial() { if (!string.IsNullOrWhiteSpace(Units.InterstitialId)) MaxSdk.LoadInterstitial(Units.InterstitialId); }
@@ -187,19 +183,6 @@ namespace TripleTapGames.Foundation.Adapters.AppLovin
             var callback = rewardedClosed; rewardedClosed = null;
             callback?.Invoke(new TTGAdResult(TTGAdResultStatus.Failed, error.Message));
             LoadRewarded();
-        }
-
-        private static void OnRevenuePaid(string id, MaxSdkBase.AdInfo info)
-        {
-            TTGAnalytics.AdImpression(new TTGAdImpression
-            {
-                AdSource = "AppLovin",
-                NetworkName = info.NetworkName,
-                AdFormat = info.AdFormat,
-                Placement = info.Placement,
-                AdUnitId = id,
-                Revenue = info.Revenue
-            });
         }
 
         public void Shutdown()

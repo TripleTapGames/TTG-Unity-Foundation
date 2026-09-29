@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4
+
+- Removed automatic analytics emission from initialization, game flow, Unity IAP, and AppLovin callbacks.
+- Kept the analytics facade and vendor fan-out available for explicit calls from each game's `Assets` scripts.
+
 ## 0.1.3
 
 - Added Singular analytics fan-out and native AppLovin ad-revenue reporting.
