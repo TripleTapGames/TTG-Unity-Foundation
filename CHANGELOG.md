@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.5
+
+- Added a complete manual analytics-events guide with copy-ready game-owned examples.
+- Clarified that base game-flow outcomes do not emit analytics automatically.
+
 ## 0.1.4
 
 - Removed automatic analytics emission from initialization, game flow, Unity IAP, and AppLovin callbacks.

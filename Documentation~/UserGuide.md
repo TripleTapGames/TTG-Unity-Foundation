@@ -8,12 +8,12 @@ Open the Unity project's `Packages/manifest.json`. Add both entries inside `depe
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.4"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.5"
 ```
 
 Keep the comma before or after these entries valid JSON. Save the file and return to Unity. Wait until Package Manager finishes downloading packages and the Console has no compilation errors.
 
-Always use a release tag such as `v0.1.4`. Do not make a production game depend directly on `main` because it can change without warning.
+Always use a release tag such as `v0.1.5`. Do not make a production game depend directly on `main` because it can change without warning.
 
 If you cloned `TTG-Unity-Template`, these package entries are already present. Open the project and allow Unity to resolve them.
 
@@ -171,6 +171,8 @@ Repeated calls reuse the same in-progress or completed initialization. Use `TTGI
 
 TTG sends an explicitly requested event to every initialized analytics provider and isolates provider exceptions. The package does not automatically emit analytics from initialization, game flow, IAP, or ad callbacks. Add the calls in a game-owned script under `Assets` so each game controls its event timing and avoids duplicates.
 
+See [Analytics Events](AnalyticsEvents.md) for a complete copy-ready project script covering custom/design events, level duration, milestones, retention, confirmed purchases, and AppLovin ad revenue.
+
 ```csharp
 using System.Collections.Generic;
 using TripleTapGames.Foundation;
@@ -283,7 +285,7 @@ TTGGameFlow.Instance.WinLevel();
 TTGGameFlow.Instance.LoseLevel();
 ```
 
-Win sends level-complete analytics, advances ad gating, and displays the Win panel. Lose sends level-fail analytics and displays the Lose panel. The generated Next and Retry buttons call `NextLevel` and `RetryLevel`. Progress is stored using the sequence asset's PlayerPrefs key.
+Win advances local ad gating and displays the Win panel. Lose displays the Lose panel. Neither outcome sends analytics automatically. Add explicit calls in a game-owned `Assets` script. The generated Next and Retry buttons call `NextLevel` and `RetryLevel`. Progress is stored using the sequence asset's PlayerPrefs key.
 
 ## 11. Validate and build
 
@@ -302,7 +304,7 @@ Foundation patches generated Android manifests without replacing custom manifest
 
 ## 12. Upgrade Foundation
 
-Change the tag in `Packages/manifest.json`, for example from `#v0.1.3` to `#v0.1.4`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests.
+Change the tag in `Packages/manifest.json`, for example from `#v0.1.4` to `#v0.1.5`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests.
 
 Do not edit files inside `Library/PackageCache`; Unity can replace them. Make package changes in the standalone `TTG-Unity-Foundation` repository and publish a new semantic-version tag.
 

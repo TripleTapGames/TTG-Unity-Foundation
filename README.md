@@ -8,7 +8,7 @@ Add both dependencies to the `dependencies` object in the consuming project's `P
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.4"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.5"
 ```
 
 Use an immutable release tag in production projects. UniTask is a required companion dependency; optional vendor SDKs are installed only when that integration is needed.
@@ -21,4 +21,4 @@ Facebook is a guided local import pinned to SDK 17.0.0.
 
 Populated configuration belongs to the consuming game, not this package. Runtime SDK keys are shipped in application binaries and must not be confused with server-side secrets. Never store privileged backend credentials in a Unity client.
 
-Start with the [complete user guide](Documentation~/UserGuide.md). Shorter references are available in [Getting Started](Documentation~/GettingStarted.md), [Firebase Installation](Documentation~/FirebaseInstallation.md), and [Upgrading SDKs](Documentation~/Upgrading.md).
+Start with the [complete user guide](Documentation~/UserGuide.md). Shorter references are available in [Analytics Events](Documentation~/AnalyticsEvents.md), [Getting Started](Documentation~/GettingStarted.md), [Firebase Installation](Documentation~/FirebaseInstallation.md), and [Upgrading SDKs](Documentation~/Upgrading.md).
