@@ -192,7 +192,7 @@ TTGIAP.Purchase(productId, result =>
 });
 ```
 
-The normalized event contains `product_id`, `price`, `currency`, and `transaction_id`. In Foundation v0.2.0 it remains a normalized custom purchase event rather than a native revenue call for every vendor. Backend receipt validation remains the game's responsibility.
+The normalized event contains `product_id`, `price`, `currency`, and `transaction_id`. In Foundation v0.2.1 it remains a normalized custom purchase event rather than a native revenue call for every vendor. Backend receipt validation remains the game's responsibility.
 
 ## AppLovin ad revenue
 

@@ -101,12 +101,8 @@ namespace TripleTapGames.Foundation.Editor
                 Configuring?.Invoke(config, scene);
                 EditorSceneManager.MarkSceneDirty(scene);
                 if (!EditorSceneManager.SaveScene(scene, ScenePath)) throw new IOException("Loading scene could not be saved.");
-                var corePath = "Assets/Scenes/Core.unity";
-                var firstScenes = new[] { new EditorBuildSettingsScene(ScenePath, true) }.AsEnumerable();
-                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(corePath) != null)
-                    firstScenes = firstScenes.Append(new EditorBuildSettingsScene(corePath, true));
-                EditorBuildSettings.scenes = firstScenes
-                    .Concat(EditorBuildSettings.scenes.Where(s => s.path != ScenePath && s.path != corePath)).ToArray();
+                EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) }
+                    .Concat(EditorBuildSettings.scenes.Where(s => s.path != ScenePath)).ToArray();
                 var requestAbsolutePath = ToProjectAbsolutePath(RequestPath);
                 if (File.Exists(requestAbsolutePath)) File.Delete(requestAbsolutePath);
                 Debug.Log("[TTG:Setup] Local Loading scene updated and placed first in Build Settings. Scene credentials are not logged; keep this scene out of Git.");
@@ -161,9 +157,22 @@ namespace TripleTapGames.Foundation.Editor
             serialized.FindProperty("progressFill").objectReferenceValue = fillImage;
             serialized.FindProperty("statusText").objectReferenceValue = statusText;
             serialized.FindProperty("waitForConsent").boolValue = true;
-            serialized.FindProperty("loadNextScene").boolValue = true;
-            serialized.FindProperty("nextSceneName").stringValue = "Core";
+            var nextScene = serialized.FindProperty("nextSceneName");
+            var resolvedNextScene = ResolveNextSceneName(nextScene.stringValue, EditorBuildSettings.scenes);
+            serialized.FindProperty("loadNextScene").boolValue = !string.IsNullOrEmpty(resolvedNextScene);
+            nextScene.stringValue = resolvedNextScene;
             serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        internal static string ResolveNextSceneName(string currentName, EditorBuildSettingsScene[] scenes)
+        {
+            var candidates = (scenes ?? Array.Empty<EditorBuildSettingsScene>())
+                .Where(scene => scene.enabled && !string.IsNullOrWhiteSpace(scene.path) && scene.path != ScenePath)
+                .Select(scene => Path.GetFileNameWithoutExtension(scene.path))
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .ToArray();
+            if (!string.IsNullOrWhiteSpace(currentName) && candidates.Contains(currentName)) return currentName;
+            return candidates.FirstOrDefault() ?? string.Empty;
         }
 
         private static Image CreateImage(string name, Transform parent, Color color)

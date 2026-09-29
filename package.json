@@ -1,6 +1,6 @@
 {
   "name": "com.tripletapgames.foundation",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "displayName": "TTG Foundation",
   "description": "Gameplay-agnostic initialization, analytics, ads, attribution, privacy, purchasing, validation, and build infrastructure for Triple Tap Games.",
   "license": "MIT",

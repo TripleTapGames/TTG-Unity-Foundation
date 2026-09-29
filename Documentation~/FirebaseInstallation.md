@@ -4,7 +4,7 @@ Firebase binaries are deliberately excluded from Git. A clone or GitHub source Z
 
 ## First setup on a clone
 
-1. Open with Unity 2022.3.62f3 and allow Package Manager to restore the pinned dependencies. Core and setup tooling work without Firebase. Create blank TTG config assets from Project Setup if needed.
+1. Open with Unity 2022.3.62f3 and allow Package Manager to restore the pinned dependencies. Foundation core and setup tooling work without Firebase. Create blank TTG config assets from Project Setup if needed.
 2. Open **Tools > Triple Tap Games > Project Setup**. The Firebase section shows Required and Detected versions separately. Firebase disabled in project config does not block a build just because its SDK is absent.
 3. Use **Open Official Firebase Downloads** to visit the [official archive](https://developers.google.com/unity/archive). Select **13.13.0**, not whichever release is latest. Download the Analytics and Crashlytics `.unitypackage` artifacts (or the matching SDK archive containing them).
 4. Keep installers outside Assets, for example in the ignored `LocalSDKInstallers/` folder. Reuse the same trusted installers for other games; no new download is needed each time.

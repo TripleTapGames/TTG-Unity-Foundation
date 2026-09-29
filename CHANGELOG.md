@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Removed the Loading generator's final `Core` scene assumption.
+- Preserved a valid configured game-scene destination or selected the first enabled non-Loading scene.
+
 ## 0.2.0
 
 - Removed `TTGLevelSequence`, `TTGGameFlow`, the base-flow generator, and their tests from the Foundation runtime.

@@ -8,12 +8,12 @@ Open the Unity project's `Packages/manifest.json`. Add both entries inside `depe
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.2.0"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.2.1"
 ```
 
 Keep the comma before or after these entries valid JSON. Save the file and return to Unity. Wait until Package Manager finishes downloading packages and the Console has no compilation errors.
 
-Always use a release tag such as `v0.2.0`. Do not make a production game depend directly on `main` because it can change without warning.
+Always use a release tag such as `v0.2.1`. Do not make a production game depend directly on `main` because it can change without warning.
 
 If you cloned `TTG-Unity-Template`, these package entries are already present. Open the project and allow Unity to resolve them.
 
@@ -133,11 +133,11 @@ Click **Create / Update Local Loading Scene**. The tool creates or repairs:
 - a `TTGConsentBootstrap` component;
 - a loading canvas, progress bar, and status text;
 - the Singular SDK object when Singular is installed and enabled;
-- Build Settings order with Loading first and Core second.
+- Build Settings order with Loading first while preserving all game-owned scenes.
 
-`TTGBootstrap` waits for resolved consent when an enabled service requires it, calls `TTGInitializer.InitializeAsync`, updates progress, and loads `Core` after a successful or warning result. A required-service failure keeps the loading screen visible and writes the reason to the Console.
+`TTGBootstrap` waits for resolved consent when an enabled service requires it, calls `TTGInitializer.InitializeAsync`, updates progress, and loads the configured game scene after a successful or warning result. The generator preserves a valid destination or selects the first enabled non-Loading scene. A required-service failure keeps the loading screen visible and writes the reason to the Console.
 
-The loading objects do not need `DontDestroyOnLoad`. TTG facades and service registry are static, and vendor adapters handle their own lifetime requirements. Singular's adapter moves its root SDK object to `DontDestroyOnLoad` during initialization. The loading UI should be destroyed when Core loads.
+The loading objects do not need `DontDestroyOnLoad`. TTG facades and service registry are static, and vendor adapters handle their own lifetime requirements. Singular's adapter moves its root SDK object to `DontDestroyOnLoad` during initialization. The loading UI is destroyed when the game scene loads.
 
 ### Manual initialization
 
@@ -299,7 +299,7 @@ Foundation patches generated Android manifests without replacing custom manifest
 
 ## 12. Upgrade Foundation
 
-Change the tag in `Packages/manifest.json`, for example from `#v0.1.5` to `#v0.2.0`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests. Version 0.2.0 removes the former prefab game-flow API; follow [Connect Your Game](GameFlow.md) before upgrading a project that used it.
+Change the tag in `Packages/manifest.json`, for example from `#v0.1.5` to `#v0.2.1`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests. Version 0.2 removes the former prefab game-flow API; follow [Connect Your Game](GameFlow.md) before upgrading a project that used it.
 
 Do not edit files inside `Library/PackageCache`; Unity can replace them. Make package changes in the standalone `TTG-Unity-Foundation` repository and publish a new semantic-version tag.
 
@@ -307,7 +307,7 @@ Do not edit files inside `Library/PackageCache`; Unity can replace them. Make pa
 
 - **Project Setup menu is missing:** wait for compilation and fix the first Console compiler error. Confirm both UniTask and Foundation resolved.
 - **Services remain deferred:** provide a consent state in the host consent flow. Editor-only development consent does not run on devices.
-- **Startup stays on Loading:** inspect `TTGBootstrap.Report` and Console output. A required integration failed, consent is unresolved, or Core is missing from Build Settings.
+- **Startup stays on Loading:** inspect `TTGBootstrap.Report` and Console output. A required integration failed, consent is unresolved, or the configured game scene is missing from Build Settings.
 - **Firebase is missing or incomplete:** import both Analytics and Crashlytics 13.13.0 and refresh the Firebase adapter.
 - **GameAnalytics values do not update:** use distinct Android/iOS keys, click Apply Configuration outside Play mode, and remove duplicate legacy initialization.
 - **Singular fails initialization:** keep exactly one root `SingularSDKObject`, then Apply Configuration outside Play mode. TTG controls startup.

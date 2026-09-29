@@ -16,7 +16,7 @@ namespace TripleTapGames.Foundation
         [SerializeField] private bool waitForConsent = true;
         [Header("Next Scene")]
         [SerializeField] private bool loadNextScene = true;
-        [SerializeField] private string nextSceneName = "Core";
+        [SerializeField] private string nextSceneName = "";
 
         public TTGInitializationReport Report { get; private set; }
 
@@ -49,7 +49,7 @@ namespace TripleTapGames.Foundation
                 if (!loadNextScene) { SetStatus("Ready"); return; }
                 if (string.IsNullOrWhiteSpace(nextSceneName) || !Application.CanStreamedLevelBeLoaded(nextSceneName))
                 {
-                    SetStatus("Core scene is not in Build Settings.");
+                    SetStatus("Game scene is not in Build Settings.");
                     Debug.LogError("[TTG:Startup] The configured next scene is missing from Build Settings.");
                     return;
                 }
