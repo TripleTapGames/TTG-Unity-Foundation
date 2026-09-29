@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+- Removed `TTGLevelSequence`, `TTGGameFlow`, the base-flow generator, and their tests from the Foundation runtime.
+- Made level structure, progression persistence, Win/Lose UI, Next, and Retry entirely game-owned.
+- Added gameplay-integration guidance for explicit level analytics, milestone, and ad-gating calls.
+- This is a breaking release for projects that used the removed prefab game-flow APIs.
+
 ## 0.1.5
 
 - Added a complete manual analytics-events guide with copy-ready game-owned examples.

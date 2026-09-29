@@ -1,24 +1,88 @@
-# Base game flow
+# Connect your game's level flow
 
-Run **Tools > Triple Tap Games > Create or Update Base Game Flow** after saving Core. The tool preserves existing Core roots and creates:
+TTG Foundation does not define a level sequence, load gameplay content, save level progress, or create Win/Lose UI. Every game keeps its own level architecture as the single source of truth. This allows prefab, scene, ScriptableObject, Addressables, procedural, and remote-content games to use the same Foundation services without converting or duplicating their data.
 
-- `Assets/Game/Config/DefaultLevelSequence.asset`
-- one `TTGGameFlow` controller with a `LevelRoot`
-- `TTGGameFlowUI` with a level label, Win panel/Next button, and Lose panel/Retry button
-- one EventSystem so pointer and touch clicks reach the generated buttons
-- Loading and Core as the first two enabled Build Settings scenes
+The game owns:
 
-Create each playable level as a prefab, select DefaultLevelSequence, and add the prefabs in the order they should be played. Give every entry a stable Level ID such as `Level_001`; a game-owned analytics script can use that ID. The default entry deliberately has no prefab, so the template remains gameplay-agnostic.
+- level ordering and stable level IDs;
+- loading, unloading, Next, and Retry;
+- progress persistence;
+- win and loss detection and UI;
+- protection against reporting an outcome more than once.
 
-When gameplay reaches an outcome, call exactly one of:
+Foundation owns SDK initialization, consent, analytics fan-out, ads, IAP, validation, and build support.
+
+## Required integration points
+
+After initialization and analytics consent, report level start when interactive gameplay actually begins:
 
 ```csharp
-TTGGameFlow.Instance.WinLevel();
-TTGGameFlow.Instance.LoseLevel();
+TTGAnalytics.LevelStarted(levelId);
 ```
 
-Win and Lose are accepted only while the current state is Playing, so duplicate collision callbacks do not duplicate panels. Next persists the next sequence index and loads its prefab. Retry reloads the same entry. For test play, the TTGGameFlow component context menu includes Debug Win and Debug Lose.
+When the game accepts a successful outcome, report it once and notify the local interstitial rules:
 
-The flow does not send analytics automatically. Add explicit `TTGAnalytics.LevelStarted`, `LevelCompleted`, `LevelFailed`, and optional `MilestoneCompleted` calls in a game-owned script under `Assets`. This keeps event timing under the game's control. Level completion still calls `TTGAds.NotifyLevelCompleted` because that updates local interstitial gating rather than sending an analytics event.
+```csharp
+TTGAnalytics.LevelCompleted(levelId);
+TTGAnalytics.MilestoneCompleted(levelNumber);
+TTGAds.NotifyLevelCompleted(levelNumber);
+```
 
-The controller belongs in Core and does not use DontDestroyOnLoad. Core remains loaded while its assigned level prefabs are replaced under LevelRoot. Loading UI and SDK bootstrap objects are separate concerns.
+When the game accepts a failed outcome, report it once:
+
+```csharp
+TTGAnalytics.LevelFailed(levelId);
+```
+
+`levelId` should be stable across releases. `levelNumber` is one-based. Analytics and ad gating are separate calls: `NotifyLevelCompleted` does not send an analytics event.
+
+## Example game-owned bridge
+
+Place a bridge like this under the consuming game's `Assets` folder and call it from the existing level controller:
+
+```csharp
+using TripleTapGames.Foundation;
+
+public sealed class GameTTGEvents
+{
+    private string currentLevelId;
+    private int currentLevelNumber;
+    private bool outcomeReported;
+
+    public void Started(string levelId, int levelNumber)
+    {
+        currentLevelId = levelId;
+        currentLevelNumber = levelNumber;
+        outcomeReported = false;
+        TTGAnalytics.LevelStarted(currentLevelId);
+    }
+
+    public void Completed()
+    {
+        if (outcomeReported) return;
+        outcomeReported = true;
+        TTGAnalytics.LevelCompleted(currentLevelId);
+        TTGAnalytics.MilestoneCompleted(currentLevelNumber);
+        TTGAds.NotifyLevelCompleted(currentLevelNumber);
+    }
+
+    public void Failed()
+    {
+        if (outcomeReported) return;
+        outcomeReported = true;
+        TTGAnalytics.LevelFailed(currentLevelId);
+    }
+}
+```
+
+Games may add duration and other design events using the examples in [Analytics Events](AnalyticsEvents.md). Keep calls explicit so the game decides the exact lifecycle point and avoids duplicate vendor events.
+
+## Migrating from Foundation 0.1.x
+
+Version 0.2.0 removes `TTGLevelSequence`, `TTGLevelDefinition`, `TTGGameFlow`, and **Create / Update Base Game Flow**. Before upgrading a project that used them:
+
+1. move level ordering and progress into the game's own system;
+2. reconnect Next, Retry, Win, and Lose UI to that system;
+3. remove scene objects with missing `TTGGameFlow` components and delete `DefaultLevelSequence.asset`;
+4. add the explicit analytics and ad-gating calls shown above;
+5. keep the generated Loading scene and `TTGBootstrap`—SDK initialization is unchanged.

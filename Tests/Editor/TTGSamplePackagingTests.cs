@@ -31,6 +31,8 @@ namespace TripleTapGames.Foundation.Tests
         [TestCase("FirebaseInstallation.md")]
         [TestCase("Troubleshooting.md")]
         [TestCase("Upgrading.md")]
+        [TestCase("GameFlow.md")]
+        [TestCase("AnalyticsEvents.md")]
         public void UserDocumentationIsIncluded(string file)
             => Assert.That(File.Exists(Root + "Documentation~/" + file), Is.True, "Missing package documentation: " + file);
     }

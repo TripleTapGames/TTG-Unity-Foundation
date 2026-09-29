@@ -50,7 +50,6 @@ namespace TripleTapGames.Foundation.Editor
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Configuration", EditorStyles.boldLabel);
             if (GUILayout.Button("Create / Update Local Loading Scene")) TTGLoadingSceneSetup.CreateOrUpdate();
-            if (GUILayout.Button("Create / Update Base Game Flow")) TTGGameFlowSetup.CreateOrUpdate();
             if (GUILayout.Button("Create / Locate TTG Project Config")) TTGConfigAssetUtility.Select(TTGConfigAssetUtility.GetOrCreateProjectConfig());
             if (GUILayout.Button("Create / Locate TTG Ads Config")) TTGConfigAssetUtility.Select(TTGConfigAssetUtility.GetOrCreateAdsConfig());
             if (GUILayout.Button("Import Values From Environment")) TTGConfigAssetUtility.ImportEnvironment(TTGConfigAssetUtility.GetOrCreateProjectConfig());

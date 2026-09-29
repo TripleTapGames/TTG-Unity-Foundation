@@ -147,7 +147,7 @@ GameAnalyticsEvents.LevelFailed(levelNumber);
 
 This produces `level_start`, `level_complete` or `level_fail`, plus a separate `level_duration` event containing `level_id`, `result`, and `duration_seconds`. The separate duration event preserves GameAnalytics native progression mapping while giving every provider duration data.
 
-`TTGGameFlow` does not call these automatically. Call the analytics method beside the game's `WinLevel` or `LoseLevel` call, and guard the gameplay outcome so it executes once.
+Foundation does not own or observe the game's level lifecycle. Call these methods beside the game's own start, win, or lose transition, and guard each gameplay outcome so it executes once.
 
 ## Milestones
 
@@ -192,7 +192,7 @@ TTGIAP.Purchase(productId, result =>
 });
 ```
 
-The normalized event contains `product_id`, `price`, `currency`, and `transaction_id`. In Foundation v0.1.5 it remains a normalized custom purchase event rather than a native revenue call for every vendor. Backend receipt validation remains the game's responsibility.
+The normalized event contains `product_id`, `price`, `currency`, and `transaction_id`. In Foundation v0.2.0 it remains a normalized custom purchase event rather than a native revenue call for every vendor. Backend receipt validation remains the game's responsibility.
 
 ## AppLovin ad revenue
 

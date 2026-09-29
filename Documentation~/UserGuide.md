@@ -8,12 +8,12 @@ Open the Unity project's `Packages/manifest.json`. Add both entries inside `depe
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.1.5"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.2.0"
 ```
 
 Keep the comma before or after these entries valid JSON. Save the file and return to Unity. Wait until Package Manager finishes downloading packages and the Console has no compilation errors.
 
-Always use a release tag such as `v0.1.5`. Do not make a production game depend directly on `main` because it can change without warning.
+Always use a release tag such as `v0.2.0`. Do not make a production game depend directly on `main` because it can change without warning.
 
 If you cloned `TTG-Unity-Template`, these package entries are already present. Open the project and allow Unity to resolve them.
 
@@ -30,7 +30,6 @@ The window provides these actions:
 - **Apply Configuration** copies TTG values into vendor settings and refreshes dependency defines for the active target.
 - **Validate Project** reports setup errors and warnings for the active build target.
 - **Create / Update Local Loading Scene** creates the loading, consent, progress, and startup flow.
-- **Create / Update Base Game Flow** creates the Core scene, level sequence, and Win/Lose UI.
 
 Generated configuration is stored below `Assets/TTGGenerated/Resources/TTG`. The tool creates `Assets/TTGGenerated/.gitignore` so populated assets remain local. Verify `git status` before every commit, particularly when adding the package to an older repository.
 
@@ -169,7 +168,7 @@ Repeated calls reuse the same in-progress or completed initialization. Use `TTGI
 
 ## 7. Send analytics events
 
-TTG sends an explicitly requested event to every initialized analytics provider and isolates provider exceptions. The package does not automatically emit analytics from initialization, game flow, IAP, or ad callbacks. Add the calls in a game-owned script under `Assets` so each game controls its event timing and avoids duplicates.
+TTG sends an explicitly requested event to every initialized analytics provider and isolates provider exceptions. The package does not own a level sequence and does not automatically emit analytics from initialization, gameplay, IAP, or ad callbacks. Add the calls in a game-owned script under `Assets` so each game controls its event timing and avoids duplicates.
 
 See [Analytics Events](AnalyticsEvents.md) for a complete copy-ready project script covering custom/design events, level duration, milestones, retention, confirmed purchases, and AppLovin ad revenue.
 
@@ -231,7 +230,7 @@ TTGAds.HideMrec();
 
 Grant the reward only inside `onRewarded`. TTG prevents overlapping requests of the same format and guarantees each wrapper callback runs at most once.
 
-Interstitial rules use completed levels, session time, and cooldown. Call `TTGAds.NotifyLevelCompleted()` after a completed level if the game does not use `TTGGameFlow`. The built-in game flow calls it automatically.
+Interstitial rules use completed levels, session time, and cooldown. The game must call `TTGAds.NotifyLevelCompleted(levelNumber)` once after accepting a completed level. This updates local ad gating and does not send an analytics event.
 
 ## 9. Configure and use IAP
 
@@ -265,27 +264,23 @@ TTGIAP.RestorePurchases(success =>
 
 Backend receipt validation is outside package v1. Add server validation before granting high-value or fraud-sensitive purchases.
 
-## 10. Use the base game flow
+## 10. Connect the game's level flow
 
-Click **Create / Update Base Game Flow**. It creates or repairs:
-
-- `Assets/Scenes/Core.unity`;
-- one `TTGGameFlow` and `LevelRoot`;
-- a canvas with level label, Win panel, Lose panel, Next button, and Retry button;
-- one EventSystem;
-- `Assets/Game/Config/DefaultLevelSequence.asset`.
-
-Open the level-sequence asset and add levels in the desired order. Give each entry a stable analytics ID and assign its level prefab.
-
-From gameplay code report the result once:
+Foundation deliberately does not provide a level sequence or gameplay controller. Keep the game's existing level data, loaders, save system, Win/Lose UI, Next, and Retry behavior. At the points where that system accepts a start or outcome, call TTG explicitly:
 
 ```csharp
-TTGGameFlow.Instance.WinLevel();
-// or
-TTGGameFlow.Instance.LoseLevel();
+TTGAnalytics.LevelStarted(levelId);
+
+// Once on a genuine win:
+TTGAnalytics.LevelCompleted(levelId);
+TTGAnalytics.MilestoneCompleted(levelNumber);
+TTGAds.NotifyLevelCompleted(levelNumber);
+
+// Or once on a genuine loss:
+TTGAnalytics.LevelFailed(levelId);
 ```
 
-Win advances local ad gating and displays the Win panel. Lose displays the Lose panel. Neither outcome sends analytics automatically. Add explicit calls in a game-owned `Assets` script. The generated Next and Retry buttons call `NextLevel` and `RetryLevel`. Progress is stored using the sequence asset's PlayerPrefs key.
+Use a stable `levelId` and a one-based `levelNumber`. Guard each outcome against duplicate callbacks. See [Connect Your Game](GameFlow.md) for a complete game-owned bridge and migration instructions for Foundation 0.1.x.
 
 ## 11. Validate and build
 
@@ -304,7 +299,7 @@ Foundation patches generated Android manifests without replacing custom manifest
 
 ## 12. Upgrade Foundation
 
-Change the tag in `Packages/manifest.json`, for example from `#v0.1.4` to `#v0.1.5`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests.
+Change the tag in `Packages/manifest.json`, for example from `#v0.1.5` to `#v0.2.0`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests. Version 0.2.0 removes the former prefab game-flow API; follow [Connect Your Game](GameFlow.md) before upgrading a project that used it.
 
 Do not edit files inside `Library/PackageCache`; Unity can replace them. Make package changes in the standalone `TTG-Unity-Foundation` repository and publish a new semantic-version tag.
 
@@ -316,8 +311,7 @@ Do not edit files inside `Library/PackageCache`; Unity can replace them. Make pa
 - **Firebase is missing or incomplete:** import both Analytics and Crashlytics 13.13.0 and refresh the Firebase adapter.
 - **GameAnalytics values do not update:** use distinct Android/iOS keys, click Apply Configuration outside Play mode, and remove duplicate legacy initialization.
 - **Singular fails initialization:** keep exactly one root `SingularSDKObject`, then Apply Configuration outside Play mode. TTG controls startup.
-- **Next or Retry does nothing:** run Create / Update Base Game Flow, confirm there is one EventSystem, and call Win/Lose before pressing the corresponding button.
 - **Ads return BlockedByRules:** inspect minimum session time, level interval, cooldown, and calls to `NotifyLevelCompleted`.
 - **IAP returns NotInitialized:** wait for successful TTG initialization and verify that the product is present in TTG config and the store dashboard.
 
-For more focused help, see [Troubleshooting](Troubleshooting.md), [Loading Scene](LoadingScene.md), [Game Flow](GameFlow.md), and [GameAnalytics Configuration](GameAnalyticsConfiguration.md).
+For more focused help, see [Troubleshooting](Troubleshooting.md), [Loading Scene](LoadingScene.md), [Connect Your Game](GameFlow.md), and [GameAnalytics Configuration](GameAnalyticsConfiguration.md).

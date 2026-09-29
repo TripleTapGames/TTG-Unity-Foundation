@@ -1,8 +1,8 @@
 {
   "name": "com.tripletapgames.foundation",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "displayName": "TTG Foundation",
-  "description": "Shared initialization, analytics, ads, attribution, privacy, purchasing, validation, and build infrastructure for Triple Tap Games.",
+  "description": "Gameplay-agnostic initialization, analytics, ads, attribution, privacy, purchasing, validation, and build infrastructure for Triple Tap Games.",
   "license": "MIT",
   "documentationUrl": "https://github.com/TripleTapGames/TTG-Unity-Foundation/blob/main/Documentation~/UserGuide.md",
   "unity": "2022.3",
