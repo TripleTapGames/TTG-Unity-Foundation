@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+- Added optional code-only `TTGLevelProgress` persistence with named tracks, linear unlocks, stable per-level records, attempts, completions, stars, and scores.
+- Added one-time legacy-save seeding without introducing a Foundation level catalog, gameplay controller, analytics side effects, or ad-gating side effects.
+- Added integration and migration guidance for existing projects.
+
 ## 0.2.1
 
 - Removed the Loading generator's final `Core` scene assumption.

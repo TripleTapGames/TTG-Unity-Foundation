@@ -1,16 +1,18 @@
 # Connect your game's level flow
 
-TTG Foundation does not define a level sequence, load gameplay content, save level progress, or create Win/Lose UI. Every game keeps its own level architecture as the single source of truth. This allows prefab, scene, ScriptableObject, Addressables, procedural, and remote-content games to use the same Foundation services without converting or duplicating their data.
+TTG Foundation does not define a level sequence, load gameplay content, or create Win/Lose UI. Every game keeps its own level architecture as the single source of truth. Games may optionally connect that architecture to the code-only `TTGLevelProgress` local store without converting or duplicating their level data.
 
 The game owns:
 
 - level ordering and stable level IDs;
 - loading, unloading, Next, and Retry;
-- progress persistence;
+- when progression is recorded and how it affects navigation;
 - win and loss detection and UI;
 - protection against reporting an outcome more than once.
 
 Foundation owns SDK initialization, consent, analytics fan-out, ads, IAP, validation, and build support.
+
+See [Level Progress](LevelProgress.md) to add local unlocks and per-level best results without a Foundation level catalog or scene component.
 
 ## Required integration points
 

@@ -13,7 +13,8 @@ namespace TripleTapGames.Foundation
         Ads,
         Singular,
         IAP,
-        Build
+        Build,
+        Progress
     }
 
     public static class TTGLogger

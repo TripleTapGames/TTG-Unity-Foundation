@@ -8,12 +8,12 @@ Open the Unity project's `Packages/manifest.json`. Add both entries inside `depe
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.2.1"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.3.0"
 ```
 
 Keep the comma before or after these entries valid JSON. Save the file and return to Unity. Wait until Package Manager finishes downloading packages and the Console has no compilation errors.
 
-Always use a release tag such as `v0.2.1`. Do not make a production game depend directly on `main` because it can change without warning.
+Always use a release tag such as `v0.3.0`. Do not make a production game depend directly on `main` because it can change without warning.
 
 If you cloned `TTG-Unity-Template`, these package entries are already present. Open the project and allow Unity to resolve them.
 
@@ -266,7 +266,19 @@ Backend receipt validation is outside package v1. Add server validation before g
 
 ## 10. Connect the game's level flow
 
-Foundation deliberately does not provide a level sequence or gameplay controller. Keep the game's existing level data, loaders, save system, Win/Lose UI, Next, and Retry behavior. At the points where that system accepts a start or outcome, call TTG explicitly:
+Foundation deliberately does not provide a level sequence or gameplay controller. Keep the game's existing level data, loaders, Win/Lose UI, Next, and Retry behavior. Projects that need a standard local save can connect those systems to `TTGLevelProgress`; no Foundation level config or scene component is required:
+
+```csharp
+TTGLevelProgress.RecordAttempt(levelNumber, levelId);
+
+// Once on a genuine win:
+TTGLevelProgress.RecordCompletion(levelNumber, levelId, stars, score);
+
+var canPlay = TTGLevelProgress.IsUnlocked(selectedLevelNumber);
+var saved = TTGLevelProgress.GetSnapshot();
+```
+
+Progress persistence does not send analytics or update ad rules. At the points where the game accepts a start or outcome, call those TTG services explicitly:
 
 ```csharp
 TTGAnalytics.LevelStarted(levelId);
@@ -280,7 +292,7 @@ TTGAds.NotifyLevelCompleted(levelNumber);
 TTGAnalytics.LevelFailed(levelId);
 ```
 
-Use a stable `levelId` and a one-based `levelNumber`. Guard each outcome against duplicate callbacks. See [Connect Your Game](GameFlow.md) for a complete game-owned bridge and migration instructions for Foundation 0.1.x.
+Use a stable `levelId` and a one-based `levelNumber`. Guard each outcome against duplicate callbacks. See [Level Progress](LevelProgress.md) for the complete API and legacy-save example, and [Connect Your Game](GameFlow.md) for the game-owned analytics bridge.
 
 ## 11. Validate and build
 
@@ -299,7 +311,7 @@ Foundation patches generated Android manifests without replacing custom manifest
 
 ## 12. Upgrade Foundation
 
-Change the tag in `Packages/manifest.json`, for example from `#v0.1.5` to `#v0.2.1`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests. Version 0.2 removes the former prefab game-flow API; follow [Connect Your Game](GameFlow.md) before upgrading a project that used it.
+Change the tag in `Packages/manifest.json`, for example from `#v0.2.1` to `#v0.3.0`. Let Unity update `Packages/packages-lock.json`, then apply configuration, validate, and run tests. Version 0.3 adds optional code-only level progress; it does not restore the prefab game-flow API removed in version 0.2.
 
 Do not edit files inside `Library/PackageCache`; Unity can replace them. Make package changes in the standalone `TTG-Unity-Foundation` repository and publish a new semantic-version tag.
 
@@ -314,4 +326,4 @@ Do not edit files inside `Library/PackageCache`; Unity can replace them. Make pa
 - **Ads return BlockedByRules:** inspect minimum session time, level interval, cooldown, and calls to `NotifyLevelCompleted`.
 - **IAP returns NotInitialized:** wait for successful TTG initialization and verify that the product is present in TTG config and the store dashboard.
 
-For more focused help, see [Troubleshooting](Troubleshooting.md), [Loading Scene](LoadingScene.md), [Connect Your Game](GameFlow.md), and [GameAnalytics Configuration](GameAnalyticsConfiguration.md).
+For more focused help, see [Troubleshooting](Troubleshooting.md), [Loading Scene](LoadingScene.md), [Level Progress](LevelProgress.md), [Connect Your Game](GameFlow.md), and [GameAnalytics Configuration](GameAnalyticsConfiguration.md).

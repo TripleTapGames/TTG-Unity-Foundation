@@ -8,14 +8,14 @@ Add both dependencies to the `dependencies` object in the consuming project's `P
 
 ```json
 "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
-"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.2.1"
+"com.tripletapgames.foundation": "https://github.com/TripleTapGames/TTG-Unity-Foundation.git#v0.3.0"
 ```
 
 Use an immutable release tag in production projects. UniTask is a required companion dependency; optional vendor SDKs are installed only when that integration is needed.
 
 Open **Tools > Triple Tap Games > Project Setup**, install or import the dependencies required by the game, create local configuration assets, and run validation before building.
 
-Foundation is gameplay-agnostic. Each game keeps its own level data, progression, save system, Win/Lose UI, Next, and Retry behavior, then calls TTG analytics and ad-gating APIs explicitly at the appropriate lifecycle points. See [Connect Your Game](Documentation~/GameFlow.md).
+Foundation is gameplay-agnostic. Each game keeps its own level data, loading, Win/Lose UI, Next, and Retry behavior. Projects may opt into the code-only local [Level Progress](Documentation~/LevelProgress.md) store without creating a Foundation level catalog, and call analytics and ad-gating APIs explicitly at the appropriate lifecycle points. See [Connect Your Game](Documentation~/GameFlow.md).
 
 Firebase Analytics and Crashlytics 13.13.0 are imported separately using the official Unity artifacts. Do not add Firebase binaries or project configuration files to this repository.
 

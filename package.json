@@ -1,8 +1,8 @@
 {
   "name": "com.tripletapgames.foundation",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "displayName": "TTG Foundation",
-  "description": "Gameplay-agnostic initialization, analytics, ads, attribution, privacy, purchasing, validation, and build infrastructure for Triple Tap Games.",
+  "description": "Gameplay-agnostic initialization, level progress, analytics, ads, attribution, privacy, purchasing, validation, and build infrastructure for Triple Tap Games.",
   "license": "MIT",
   "documentationUrl": "https://github.com/TripleTapGames/TTG-Unity-Foundation/blob/main/Documentation~/UserGuide.md",
   "unity": "2022.3",
@@ -10,7 +10,7 @@
   "dependencies": {
     "com.unity.ugui": "1.0.0"
   },
-  "keywords": ["ttg", "analytics", "ads", "iap"],
+  "keywords": ["ttg", "progress", "analytics", "ads", "iap"],
   "samples": [
     {
       "displayName": "Bootstrap Example",
