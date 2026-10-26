@@ -6,6 +6,9 @@ using Cysharp.Threading.Tasks;
 using Singular;
 using UnityEngine;
 
+// Ensure the linker discovers runtime registration even without scene references.
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+
 namespace TripleTapGames.Foundation.Adapters.Singular
 {
     internal sealed class SingularService : ITTGService, ITTGAnalyticsProvider, ITTGConsentAdapter

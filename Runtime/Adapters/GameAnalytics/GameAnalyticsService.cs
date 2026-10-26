@@ -4,6 +4,9 @@ using Cysharp.Threading.Tasks;
 using GameAnalyticsSDK;
 using UnityEngine;
 
+// Ensure the linker discovers runtime registration even without scene references.
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+
 namespace TripleTapGames.Foundation.Adapters.GameAnalytics
 {
     internal sealed class GameAnalyticsService : ITTGService, ITTGAnalyticsProvider, ITTGConsentAdapter

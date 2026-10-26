@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Marked all SDK adapter assemblies with `AlwaysLinkAssembly` so managed stripping discovers their runtime service registration, including the generated local Firebase adapter after refresh.
+
 ## 0.3.0
 
 - Added optional code-only `TTGLevelProgress` persistence with named tracks, linear unlocks, stable per-level records, attempts, completions, stars, and scores.

@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 
+// Ensure the linker discovers runtime registration even without scene references.
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+
 namespace TripleTapGames.Foundation.Adapters.IAP
 {
     internal sealed class UnityIAPService : ITTGService, ITTGIAPProvider, IDetailedStoreListener

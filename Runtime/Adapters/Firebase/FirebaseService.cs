@@ -8,6 +8,9 @@ using Firebase.Analytics;
 using Firebase.Crashlytics;
 using UnityEngine;
 
+// Ensure the linker discovers runtime registration even without scene references.
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+
 namespace TripleTapGames.Foundation.Adapters.Firebase
 {
     internal sealed class FirebaseService : ITTGService, ITTGAnalyticsProvider, ITTGConsentAdapter, ITTGCrashReporter

@@ -5,6 +5,9 @@ using Cysharp.Threading.Tasks;
 using Facebook.Unity;
 using UnityEngine;
 
+// Ensure the linker discovers runtime registration even without scene references.
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+
 namespace TripleTapGames.Foundation.Adapters.Facebook
 {
     internal sealed class FacebookService : ITTGService, ITTGAnalyticsProvider, ITTGConsentAdapter

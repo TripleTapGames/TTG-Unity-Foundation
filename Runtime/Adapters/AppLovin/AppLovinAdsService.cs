@@ -4,6 +4,9 @@ using AppLovinMax;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
+// Ensure the linker discovers runtime registration even without scene references.
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
+
 namespace TripleTapGames.Foundation.Adapters.AppLovin
 {
     internal sealed class AppLovinAdsService : ITTGService, ITTGAdsProvider, ITTGConsentAdapter
