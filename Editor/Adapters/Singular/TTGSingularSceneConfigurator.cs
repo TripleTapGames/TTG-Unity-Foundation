@@ -3,6 +3,8 @@ using System.Linq;
 using Singular;
 using TripleTapGames.Foundation.Adapters.Singular;
 using UnityEditor;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,4 +39,20 @@ namespace TripleTapGames.Foundation.Editor
             if (PrefabUtility.IsPartOfPrefabInstance(sdk)) PrefabUtility.RecordPrefabInstancePropertyModifications(sdk);
         }
     }
+    /// <summary>Report stale authored startup before it can bypass TTG consent/configuration.</summary>
+    internal sealed class TTGSingularStartupValidator : IProcessSceneWithReport
+    {
+        public int callbackOrder => -1000;
+        public void OnProcessScene(Scene scene, BuildReport report)
+        {
+            if (report == null) return;
+            var config = TTGConfigProvider.LoadProjectConfig();
+            if (config == null || !config.Singular.Enabled) return;
+            foreach (var sdk in scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<SingularSDK>(true)))
+                if (sdk.gameObject.activeInHierarchy && sdk.InitializeOnAwake)
+                    throw new BuildFailedException("[TTG:Singular] " + scene.path
+                        + " contains automatic Singular startup. Regenerate Loading through TTG Setup, or disable InitializeOnAwake and let TTG own initialization.");
+        }
+    }
+
 }

@@ -35,9 +35,16 @@ namespace TripleTapGames.Foundation
                 }
                 Report = await TTGInitializer.InitializeAsync(destroyCancellationToken);
                 SetProgress(1f);
+                foreach (var result in Report.Results)
+                {
+                    var detail = "[TTG:Startup] " + result.ServiceName + " [" + result.Status + "]: " + result.Message;
+                    if (result.Exception != null) detail += "\n" + result.Exception;
+                    if (result.Status == TTGInitializationStatus.Failure) Debug.LogError(detail);
+                    else if (result.Status == TTGInitializationStatus.Warning) Debug.LogWarning(detail);
+                }
                 if (!Report.Succeeded)
                 {
-                    SetStatus("Startup failed. Check the Console.");
+                    SetFailureStatus(Report.FailureSummary);
                     Debug.LogError("[TTG:Startup] Initialization failed. Check configuration and service results.");
                     return;
                 }
@@ -59,7 +66,7 @@ namespace TripleTapGames.Foundation
             catch (OperationCanceledException) { }
             catch (Exception exception)
             {
-                SetStatus("Startup failed. Check the Console.");
+                SetFailureStatus(exception.GetType().Name + ": " + exception.Message);
                 Debug.LogException(exception);
             }
             finally { TTGInitializer.OnProgressChanged -= UpdateProgress; }
@@ -87,6 +94,20 @@ namespace TripleTapGames.Foundation
         private void SetProgress(float value)
         {
             if (progressFill != null) progressFill.fillAmount = Mathf.Clamp01(value);
+        }
+
+        private void SetFailureStatus(string detail)
+        {
+            if (statusText != null)
+            {
+                statusText.supportRichText = false;
+                statusText.resizeTextForBestFit = true;
+                statusText.resizeTextMinSize = 14;
+                statusText.resizeTextMaxSize = statusText.fontSize;
+                statusText.horizontalOverflow = HorizontalWrapMode.Wrap;
+                statusText.verticalOverflow = VerticalWrapMode.Overflow;
+            }
+            SetStatus("Startup failed\n" + detail);
         }
 
         private void SetStatus(string value)

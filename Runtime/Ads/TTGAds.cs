@@ -71,6 +71,7 @@ namespace TripleTapGames.Foundation
             provider = adsProvider;
             config = adsConfig;
             sessionStartedAt = Clock();
+            lastInterstitialAt = double.NegativeInfinity;
             completedLevels = 0;
             interstitialShowing = false;
             rewardedShowing = false;
@@ -141,8 +142,9 @@ namespace TripleTapGames.Foundation
 
         private static bool IsInterstitialAllowed()
         {
-            if (config == null || !config.AdsEnabled || config.Interstitial == null || !config.Interstitial.Enabled) return false;
-            var rules = config.Interstitial;
+            if (config == null || !config.AdsEnabled || config.Interstitial == null) return false;
+            var rules = TTGAdRemoteConfig.Resolve(config.Interstitial);
+            if (!rules.Enabled) return false;
             return Clock() - sessionStartedAt >= rules.MinimumSessionTime
                 && Clock() - lastInterstitialAt >= rules.CooldownSeconds
                 && completedLevels >= Math.Max(1, rules.LevelInterval);

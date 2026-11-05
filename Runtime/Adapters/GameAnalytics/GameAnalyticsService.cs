@@ -40,6 +40,10 @@ namespace TripleTapGames.Foundation.Adapters.GameAnalytics
             GameAnalyticsSDK.GameAnalytics.SetEnabledEventSubmission(
                 TTGPrivacy.State.Analytics == TTGConsentStatus.Granted);
             TTGAnalytics.RegisterProvider(this);
+            TTGAdRemoteConfig.SetReader(remoteKey => IsInitialized
+                && TTGPrivacy.State.Analytics == TTGConsentStatus.Granted
+                && GameAnalyticsSDK.GameAnalytics.IsRemoteConfigsReady()
+                    ? GameAnalyticsSDK.GameAnalytics.GetRemoteConfigsValueAsString(remoteKey, null) : null);
             return UniTask.FromResult(TTGInitializationResult.Successful(ServiceName));
         }
 
@@ -78,6 +82,7 @@ namespace TripleTapGames.Foundation.Adapters.GameAnalytics
         public void Shutdown()
         {
             TTGAnalytics.UnregisterProvider(this);
+            TTGAdRemoteConfig.ClearReader();
             IsInitialized = false;
         }
     }

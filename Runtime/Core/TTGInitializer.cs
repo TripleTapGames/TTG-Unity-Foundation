@@ -16,6 +16,7 @@ namespace TripleTapGames.Foundation
 
         public static bool IsInitialized { get; private set; }
         public static bool IsInitializing { get; private set; }
+        public static TTGInitializationReport LastReport => lastReport;
         public static TTGInitializationProgress CurrentProgress { get; private set; }
         public static event Action OnInitialized;
         public static event Action<TTGInitializationProgress> OnProgressChanged;
@@ -97,7 +98,7 @@ namespace TripleTapGames.Foundation
                     {
                         var deferred = new TTGInitializationResult(service.ServiceName, TTGInitializationStatus.Deferred, "Waiting for host-provided consent.");
                         results.Add(deferred);
-                        overall = TTGInitializationStatus.Warning;
+                        if (overall != TTGInitializationStatus.Failure) overall = TTGInitializationStatus.Warning;
                         ReportProgress(++completedServices, totalServices, service.ServiceName, deferred.Status);
                         continue;
                     }

@@ -24,3 +24,7 @@ Facebook is a guided local import pinned to SDK 17.0.0.
 Populated configuration belongs to the consuming game, not this package. Runtime SDK keys are shipped in application binaries and must not be confused with server-side secrets. Never store privileged backend credentials in a Unity client.
 
 Start with the [complete user guide](Documentation~/UserGuide.md). Shorter references are available in [Analytics Events](Documentation~/AnalyticsEvents.md), [Getting Started](Documentation~/GettingStarted.md), [Firebase Installation](Documentation~/FirebaseInstallation.md), and [Upgrading SDKs](Documentation~/Upgrading.md).
+
+## Monetization updates (0.3.1 unreleased)
+
+See [Monetization](Documentation~/Monetization.md) for remote interstitial rules, store initialization, purchase failure messages, receipt ownership, restoration, and device validation. This source update has not been published as a Git tag.

@@ -40,18 +40,42 @@ namespace TripleTapGames.Foundation
         void RestorePurchases(Action<bool> callback);
     }
 
+    public interface ITTGIAPOwnershipProvider
+    {
+        // null means the store/product is not available; a receipt is not server validation.
+        bool? HasReceipt(string productId);
+    }
+
     public static class TTGIAP
     {
         private static ITTGIAPProvider provider;
         public static bool IsInitialized => provider != null && provider.IsInitialized;
+        public static event Action<TTGPurchaseResult> PurchaseReceived;
+        public static bool? HasReceipt(string productId) => IsInitialized
+            && provider is ITTGIAPOwnershipProvider ownership ? ownership.HasReceipt(productId) : null;
+
+        internal static void NotifyPurchaseReceived(TTGPurchaseResult result)
+        {
+            var listeners = PurchaseReceived;
+            if (listeners == null) return;
+            foreach (Action<TTGPurchaseResult> listener in listeners.GetInvocationList())
+                try { listener(result); }
+                catch (Exception exception) { UnityEngine.Debug.LogException(exception); }
+        }
 
         internal static void Configure(ITTGIAPProvider iapProvider) => provider = iapProvider;
 
         public static void Purchase(string productId, Action<TTGPurchaseResult> callback)
         {
+            if (string.IsNullOrWhiteSpace(productId) || productId != productId.Trim())
+            {
+                callback?.Invoke(new TTGPurchaseResult(TTGPurchaseStatus.ProductUnavailable, productId,
+                    message: "An exact configured product ID is required (IDs are case-sensitive)."));
+                return;
+            }
             if (!IsInitialized)
             {
-                callback?.Invoke(new TTGPurchaseResult(TTGPurchaseStatus.NotInitialized, productId));
+                callback?.Invoke(new TTGPurchaseResult(TTGPurchaseStatus.NotInitialized, productId, message: "Store is not initialized. Check the startup report."));
                 return;
             }
 

@@ -62,6 +62,18 @@ namespace TripleTapGames.Foundation.Tests
         }
 
         [Test]
+        public void DeferredServiceDoesNotHideEarlierRequiredFailure()
+        {
+            var registry = new TTGServiceRegistry();
+            registry.Register(new MockService(TTGInitializationStatus.Failure, required: true, order: 1));
+            registry.Register(new MockService(TTGInitializationStatus.Success, required: false, order: 2, requiresConsent: true));
+            var report = TTGInitializer.InitializeAsync(config, null, registry).GetAwaiter().GetResult();
+            Assert.That(report.Results[1].Status, Is.EqualTo(TTGInitializationStatus.Deferred));
+            Assert.That(report.OverallStatus, Is.EqualTo(TTGInitializationStatus.Failure));
+            Assert.That(report.Succeeded, Is.False);
+        }
+
+        [Test]
         public void ProgressReportsEachEnabledServiceInOrder()
         {
             var registry = new TTGServiceRegistry();

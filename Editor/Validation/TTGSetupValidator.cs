@@ -101,8 +101,9 @@ namespace TripleTapGames.Foundation.Editor
         {
             if (!config.IAP.Enabled) return;
             if (!UnityEditor.PackageManager.PackageInfo.GetAllRegisteredPackages().Any(p => p.name == "com.unity.purchasing")) Error(results, "IAP", "Unity IAP is enabled but not installed.");
-            if (config.IAP.Products == null || config.IAP.Products.Count == 0) Warning(results, "IAP", "No products are configured.");
-            else if (config.IAP.Products.Any(product => product == null || string.IsNullOrWhiteSpace(product.ProductId))) Error(results, "IAP", "Every IAP product requires a product ID.");
+            var catalogError = TTGIAPCatalog.Validate(config.IAP.Products);
+            if (catalogError != null) Error(results, "IAP", catalogError);
+            Warning(results, "IAP", "Store-side product activation, country availability and tester access cannot be verified locally. IDs must match the store exactly.");
         }
 
         private static void Error(List<TTGValidationResult> results, string category, string message) => results.Add(new TTGValidationResult(category, message, TTGValidationSeverity.Error));

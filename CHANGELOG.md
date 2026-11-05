@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased
+## 0.3.1 (unreleased)
+
+- Resolve GameAnalytics remote interstitial rules in both readiness and show checks without mutating local assets. Existing keys and local fallback are preserved.
+- Initialize Unity Gaming Services before Unity IAP, validate catalogs, expose receipt availability and restored purchase events, and reject duplicate in-flight product requests.
+- Surface per-service startup failures and exception details, including optional failures; preserve required failures when another service is deferred.
+- Reject active automatic Singular startup during builds and default new Singular configs to TTG-owned initialization.
+- Add monetization regression tests and migration guidance.
 
 - Marked all SDK adapter assemblies with `AlwaysLinkAssembly` so managed stripping discovers their runtime service registration, including the generated local Firebase adapter after refresh.
 

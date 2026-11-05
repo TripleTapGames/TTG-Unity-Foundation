@@ -53,8 +53,8 @@ namespace TripleTapGames.Foundation
     {
         public string ApiKey;
         public string ApiSecret;
-        public bool InitializeOnAwake = true;
-        public bool EnableLogging = true;
+        public bool InitializeOnAwake = false;
+        public bool EnableLogging = false;
         [Range(0, 3)] public int LogLevel = 3;
         public bool SkanEnabled = true;
         public bool WaitForTrackingAuthorization = true;

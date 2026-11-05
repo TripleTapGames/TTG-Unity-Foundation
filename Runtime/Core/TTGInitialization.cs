@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
@@ -42,6 +43,24 @@ namespace TripleTapGames.Foundation
         public IReadOnlyList<TTGInitializationResult> Results => results;
         public TTGInitializationStatus OverallStatus { get; internal set; }
         public bool Succeeded => OverallStatus != TTGInitializationStatus.Failure;
+
+        public string FailureSummary
+        {
+            get
+            {
+                var text = new StringBuilder();
+                foreach (var result in results)
+                {
+                    if (result.Status != TTGInitializationStatus.Failure) continue;
+                    if (text.Length > 0) text.AppendLine();
+                    text.Append(result.ServiceName).Append(": ").Append(result.Message);
+                    if (result.Exception != null)
+                        text.Append(" (").Append(result.Exception.GetType().Name).Append(": ")
+                            .Append(result.Exception.Message).Append(')');
+                }
+                return text.ToString();
+            }
+        }
 
         internal TTGInitializationReport(List<TTGInitializationResult> results, TTGInitializationStatus status)
         {
